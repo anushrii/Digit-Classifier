@@ -1,0 +1,14 @@
+services:
+  mlflow:
+    build: 
+      dockerfile: Dockerfile.mlflow
+    ports:
+      - "5050:5050"
+    volumes:
+      - ./mlflow:/app
+
+  inference-server:
+    build: 
+      dockerfile: Dockerfile.inference
+    ports:
+      - "8080:8080"

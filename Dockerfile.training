@@ -1,0 +1,8 @@
+FROM serve-project-base
+
+WORKDIR /app
+ENV PYTHONPATH=/app
+
+COPY train_pipeline/ .
+
+CMD ["python", "cli.py"]
