@@ -2,7 +2,6 @@ from typing import List
 from pydantic import BaseModel
 
 
-
 class InferenceInput(BaseModel):
     """
     InferenceInput is a Pydantic model that represents the input data required for an inference request.
@@ -25,9 +24,9 @@ class InferenceOutput(BaseModel):
         prob (float): The probability score of the prediction.
     """
 
-    class_id : int
+    class_id: int
     prob: float
-    
+
 
 class PrepModelInput(BaseModel):
     """
@@ -38,6 +37,7 @@ class PrepModelInput(BaseModel):
     """
 
     model_uri: str
+
 
 class PrepModelResponse(BaseModel):
     """

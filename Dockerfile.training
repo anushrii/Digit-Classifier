@@ -5,4 +5,4 @@ ENV PYTHONPATH=/app
 
 COPY train_pipeline/ .
 
-CMD ["python", "cli.py"]
+CMD ["python", "main.py"]

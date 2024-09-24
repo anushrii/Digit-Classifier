@@ -8,8 +8,8 @@ learning_rates:
   - 0.01
   - 0.001
 
-epochs_choices: 
+epoch_choices: 
   - 1
   - 2
 
-num_runs: 4
+num_runs: 3
