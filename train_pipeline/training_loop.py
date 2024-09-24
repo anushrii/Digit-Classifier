@@ -78,6 +78,9 @@ def training_run(
 
     with mlflow.start_run(run_name=run_name, nested=True):
         mlflow.log_params(log_params)
+        with open("/tmp/model_summary.txt", "w") as f:
+            f.write(str(summary(model)))
+        mlflow.log_artifact("/tmp/model_summary.txt")
 
         print(f"\nRunning for {epochs} epochs")
         print(f"Batch size is {batch_size}")

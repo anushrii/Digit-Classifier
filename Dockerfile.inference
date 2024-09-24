@@ -3,6 +3,7 @@ FROM serve-project-base
 WORKDIR /app
 ENV PYTHONPATH=/app
 
+COPY train_pipeline/model.py .
 COPY inference_server/*.py .
 EXPOSE 5000
 
