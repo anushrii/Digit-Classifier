@@ -57,7 +57,11 @@ Inference Server will be running on `http://localhost:8080`
 
 ### 5. Run a hyperparameter tuning job
 
-The hyperparameter tuning job config can be found at `hyperparameter_tuning/config.yaml` . Update the given parameters as needed. Adding new parameters is not supported in the current implementation.
+The hyperparameter tuning job config can be found at `hyperparameter_tuning/config.yaml` .
+
+Update the given parameters as needed. Adding new parameters is not supported in the current implementation.
+
+For the chosen number of runs `num_runs`, a random conmbination of provided parameters will be picked.
 
 Sample:
 
@@ -76,6 +80,9 @@ num_runs: 3
 
 ```
 
+This will run 3 tuning jobs with a random combination of batch size, learning rate,
+epochs.
+
 Run in a new terminal or new tab:
 
 ```bash
@@ -86,14 +93,20 @@ docker run -v ./hyperparameter_tuning:/app/hyperparameter_tuning training-job
 
 ### 6. Alias registered model as dev
 
-Go to ML Flow (linked above), find run, find model, alias as dev.
+Having run multiple tuned tests, let's say we want to pick a model with highest test accuracy.
+
+1. Go to ML Flow ([linked above](http://localhost:5050))
+2. Choose all the model runs you want to compare.
+3. Compare the runs and look at the test accuracy for each.
+4. Click on the model with best accuracy(see gif for steps)
+4. Alias this model as dev.
 
 ![Alt Text](model_registration.gif)
 
 
 ### 7. Prepare model for serving
 
-#### Note full model uri.
+#### Note full model uri (we're pointing to the dev version of digit-classifer that was set in the previous step).
 
 Run in a new terminal or new tab:
 ```bash
@@ -103,6 +116,8 @@ curl -XPOST http://localhost:8080/internal/prep_model/digit-classifier/dev -H Co
 ```
 
 ### 8. Run a simple inference invocation
+
+This script hits the infer endpoint of the served model with a randomly generated image.
 
 ```bash
 python test_script.py
