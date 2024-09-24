@@ -54,6 +54,9 @@ MLFlow will be running on `http://localhost:5050`
 
 Inference Server will be running on `http://localhost:8080`
 
+Prometheus is used for instrumenting inference server metrics.
+
+Metrics can be found at `http://localhost:8080/metrics`
 
 ### 5. Run a hyperparameter tuning job
 
