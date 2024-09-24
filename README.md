@@ -122,7 +122,13 @@ curl -XPOST http://localhost:8080/internal/prep_model/digit-classifier/dev -H Co
 
 This script hits the infer endpoint of the served model with a randomly generated image.
 
+
 ```bash
+
+python3 -m venv .env
+source .env/bin/activate
+pip install requests
+
 python test_script.py
 ```
 
