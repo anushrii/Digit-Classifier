@@ -64,7 +64,7 @@ The hyperparameter tuning job config can be found at `hyperparameter_tuning/conf
 
 Update the given parameters as needed. Adding new parameters is not supported in the current implementation.
 
-For the chosen number of runs `num_runs`, a random conmbination of provided parameters will be picked.
+For the chosen number of runs `num_runs`, a random combination of provided parameters will be picked.
 
 Sample:
 
