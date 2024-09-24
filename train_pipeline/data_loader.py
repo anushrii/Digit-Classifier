@@ -1,13 +1,8 @@
-import logging
-from typing import Tuple
-
 import torchvision
 from torch.utils.data import DataLoader
 
 
-def load_MNIST_data(
-    root: str = "./data", batch_size: int = 64
-) -> Tuple[DataLoader, DataLoader]:
+def download_MNIST_data(root="./data"):
     """
     Load MNIST data from torch vision datasets using torch dataloader
 
@@ -35,6 +30,23 @@ def load_MNIST_data(
     print(
         f"Successfully loaded MNIST data. Train data shape: {train_mnist_data.data.shape}, Test data shape: {test_mnist_data.data.shape}"
     )
+
+    return train_mnist_data, test_mnist_data
+
+
+def get_data_loader(train_mnist_data, test_mnist_data, batch_size):
+    """
+    Get train and test data loaders for MNIST dataset.
+
+    Args:
+    train_mnist_data (torchvision.datasets.MNIST): Training data.
+    test_data_loader (torchvision.datasets.MNIST): Testing data.
+    batch_size (int): Batch size for the data loader.
+
+    Returns:
+    DataLoader: Training data loader.
+    DataLoader: Testing data loader
+    """
     train_data_loader = DataLoader(
         train_mnist_data, batch_size=batch_size, shuffle=True
     )

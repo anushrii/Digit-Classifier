@@ -55,7 +55,7 @@ Go to ML Flow (linked above), find run, find model, alias as dev.
 
 ```bash
 
-curl -XPOST http://localhost:8080/internal/prep_model -d '{"model_uri": "models:/digit-classifier@dev"}' -H Content-Type: 'application/json'
+curl -XPOST http://localhost:8080/internal/prep_model/digit-classifier/dev -H Content-Type: 'application/json'
 
 ```
 

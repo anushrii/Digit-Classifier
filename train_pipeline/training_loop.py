@@ -9,7 +9,7 @@ import torch
 from torch import nn
 from torchinfo import summary
 
-from data_loader import load_MNIST_data
+from data_loader import download_MNIST_data, get_data_loader
 from model import DigitClassifier
 from trainer import Trainer
 
@@ -34,8 +34,8 @@ def training_run(
     batch_sizes,
     learning_rates,
     epoch_choices,
-    train_data_loader,
-    test_data_loader,
+    train_data,
+    test_data,
 ):
     """
     Train the model with random selection of hyperparameters.
@@ -46,8 +46,8 @@ def training_run(
     batch_sizes (list): List of batch sizes
     learning_rates (list): List of learning rates
     epoch_choices (list): List of epochs
-    train_data_loader (DataLoader): Training data loader
-    test_data_loader (DataLoader): Testing data loader
+    train_data_loader (DataLoader): Training data
+    test_data (DataLoader): Testing data
     """
 
     batch_size = random.choice(batch_sizes)
@@ -60,6 +60,9 @@ def training_run(
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
     trainer = Trainer(model, optimizer, loss_fn, accuracy_fn)
+    train_data_loader, test_data_loader = get_data_loader(
+        train_data, test_data, batch_size=batch_size
+    )
 
     log_params = {
         "model": model.__class__.__name__,
@@ -120,7 +123,6 @@ def generate_test_names(test_runs):
 
 
 def execute_tuning(
-    run_num,
     batch_sizes=[64, 32, 16],
     learning_rates=[0.01, 0.001, 0.0001],
     epoch_choices=[1, 2, 3],
@@ -136,17 +138,16 @@ def execute_tuning(
     4. Log the runs.
 
     Args:
-    run_num (int): Test number
     batch_sizes (list): List of batch sizes
     learning_rates (list): List of learning rates
     epoch_choices (list): List of epochs
     num_runs (int): Number of runs
     """
 
-    train_data_loader, test_data_loader = load_MNIST_data(root="./data", batch_size=64)
+    train_data, test_data = download_MNIST_data(root="./data")
 
     # Use a parent run to encapsulate the child runs.
-    with mlflow.start_run(run_name=f"hyprm_tuning_job_{job_id}_run_{run_num}"):
+    with mlflow.start_run(run_name=f"hyprm_tuning_job_{job_id}"):
 
         # Partial application of the log_run function.
         log_current_run = partial(
@@ -154,8 +155,8 @@ def execute_tuning(
             batch_sizes=batch_sizes,
             learning_rates=learning_rates,
             epoch_choices=epoch_choices,
-            train_data_loader=train_data_loader,
-            test_data_loader=test_data_loader,
+            train_data=train_data,
+            test_data=test_data,
         )
 
         # Generate test names and apply training_run function to each test name.

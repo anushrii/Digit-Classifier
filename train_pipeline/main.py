@@ -1,5 +1,4 @@
 import yaml
-from more_itertools import consume
 
 import mlflow
 from training_loop import execute_tuning
@@ -31,7 +30,6 @@ def main():
     print(f"Starting hyperparameter tuning Job ID: {job_id}\n")
 
     execute_tuning(
-        run_num=1,
         batch_sizes=config["batch_sizes"],
         learning_rates=config["learning_rates"],
         epoch_choices=config["epoch_choices"],
