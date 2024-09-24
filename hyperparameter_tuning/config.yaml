@@ -1,0 +1,15 @@
+experiment_name: Digit Classification
+
+batch_sizes:
+  - 32
+  - 64
+
+learning_rates: 
+  - 0.01
+  - 0.001
+
+epochs_choices: 
+  - 1
+  - 2
+
+num_runs: 4

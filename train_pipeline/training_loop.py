@@ -108,22 +108,21 @@ def training_run(run_name,
         )
 
 
-
-def generate_run_names(test_no, num_runs=1):
+def generate_test_names(test_runs):
     """
-    Generate run names for the training runs.
+    Generate test names for the training runs.
 
     Args:
-    test_no (int): Test number
-    num_runs (int): Number of runs
+    test_runs (int): Number of tests for this run.
     """
-    return (f"run_{i}_test_{test_no}" for i in range(num_runs))
+    return (f"test_{i}" for i in range(test_runs))
 
 
-def execute_tuning(test_no,
+def execute_tuning(run_num,
             batch_sizes = [64, 32, 16],
             learning_rates = [0.01, 0.001, 0.0001], 
             epochs_choices = [1, 2, 3],
+            job_id = "default",
             num_runs = 1,
     ):
     """
@@ -135,18 +134,19 @@ def execute_tuning(test_no,
     4. Log the runs.
 
     Args:
-    test_no (int): Test number
+    run_num (int): Test number
     batch_sizes (list): List of batch sizes
     learning_rates (list): List of learning rates
     epochs_choices (list): List of epochs
     num_runs (int): Number of runs
     """
-    
+
     train_data_loader, test_data_loader = load_MNIST_data(root='./data', batch_size=64)
 
-    # Use a parent run to encapsulate the child runs
-    with mlflow.start_run(run_name=f"parent_run_test_{test_no}"):
-        # Partial application of the log_run function
+    # Use a parent run to encapsulate the child runs.
+    with mlflow.start_run(run_name=f"hyprm_tuning_job_{job_id}_run_{run_num}"):
+        
+        # Partial application of the log_run function.
         log_current_run = partial(
             training_run,
             batch_sizes=batch_sizes,
@@ -156,9 +156,9 @@ def execute_tuning(test_no,
             test_data_loader=test_data_loader,
         )
 
-        # Generate run names and apply log_current_run function to each run name
-        runs = starmap(
-            log_current_run, ((run_name,) for run_name in generate_run_names(test_no, num_runs))
+        # Generate test names and apply training_run function to each test name.
+        tests = starmap(
+            log_current_run, ((test_name,) for test_name in generate_test_names(num_runs))
         )
-        # Consume the iterator to execute the runs
-        consume(runs)
+        # Consume the iterator to execute the tests.
+        consume(tests)

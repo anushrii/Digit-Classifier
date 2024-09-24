@@ -34,7 +34,7 @@ docker compose up
 
 ```bash
 
-docker run -v ./train_out:/app/out training-job
+docker run -v ./train_out:/app/out -v ./hyperparameter_tuning:/app/hyperparameter_tuning training-job
 
 ```
 
